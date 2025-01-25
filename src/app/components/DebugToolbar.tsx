@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { client, graphql } from '../graphql'
-import { TrackFragment, type Track } from './TrackRow'
+import { client, graphql } from '../../graphql.ts'
+import { TrackFragment, type Track } from './TrackRow.tsx'
 
 /**
  * A debug toolbar used to artificially add tracks to the history.

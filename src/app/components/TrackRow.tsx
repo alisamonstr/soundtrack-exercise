@@ -1,4 +1,4 @@
-import { FragmentOf, graphql } from '../graphql'
+import { FragmentOf, graphql } from '../../graphql.ts'
 
 export function TrackRow(props: { entry: HistoryTrack }): React.ReactNode {
   const { entry } = props

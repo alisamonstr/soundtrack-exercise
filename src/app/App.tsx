@@ -1,8 +1,13 @@
 import * as React from 'react'
 import { client, graphql } from '../graphql'
 import './App.css'
-import { TrackFragment, TrackRow, type HistoryTrack } from './TrackRow'
-import { DebugToolbar } from './DebugToolbar'
+import {
+  TrackFragment,
+  TrackRow,
+  type HistoryTrack,
+} from './components/TrackRow.tsx'
+import { DebugToolbar } from './components/DebugToolbar.tsx'
+import { Header } from './components/Header.tsx'
 
 /**
  * A selection of various sound zones in the Soundtrack Stockholm office.
@@ -10,14 +15,18 @@ import { DebugToolbar } from './DebugToolbar'
  * The value represents the "short ID" of the zone, which can be used to get
  * playback history without being authenticated.
  */
-const SOUNDTRACK_ZONES = {
+export const SOUNDTRACK_ZONES = {
   Lounge: 'BRGJFA',
   Listen: 'ODJECD',
   'Glass Room': 'SNLETO',
 } as const
 
 export default function App(): React.ReactNode {
-  const shortID = location.hash?.slice(1) || SOUNDTRACK_ZONES.Lounge
+  const searchParams = new URLSearchParams(location.search)
+  const currentZone = searchParams.get('zone')
+  const shortID =
+    SOUNDTRACK_ZONES[currentZone as keyof typeof SOUNDTRACK_ZONES] ||
+    SOUNDTRACK_ZONES.Lounge
 
   const [entries, setEntries] = React.useState<HistoryTrack[]>([])
   const appendEntry = React.useCallback(
@@ -59,6 +68,7 @@ export default function App(): React.ReactNode {
 
   return (
     <main>
+      <Header />
       <DebugToolbar onAddTrack={appendEntry} />
       <table className="history">
         <thead>
