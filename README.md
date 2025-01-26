@@ -47,7 +47,7 @@ We also provide a list of [recommended VS Code extensions](.vscode/extensions.js
 - [x] Allow user to change which zone to display (see `SOUNDTRACK_ZONES` for a selection of zone ids)
 - [x] Display the currently playing track with cover art in one column, and a track history list in another
 - [x] Only display the currently playing track in a kiosk-like mode
-- [ ] Link tracks/artists to `https://business.soundtrackyourbrand.com/search/{id}`
+- [x] Link tracks/artists to `https://business.soundtrackyourbrand.com/search/{id}`
 - [x] Display entry timestamp in a relative format (X seconds/minutes/hours ago) + extra credits if it stays updated
 - [ ] Utilize any other data available in each entry
 

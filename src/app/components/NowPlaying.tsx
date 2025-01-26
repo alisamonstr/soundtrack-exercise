@@ -2,6 +2,7 @@ import { HistoryTrack } from './TrackRow'
 import { TrackImage } from './TrackImage.tsx'
 import useProgress from '../hooks/useProgress.ts'
 import { Link, useLocation, useSearchParams } from 'react-router'
+import { Fragment } from 'react'
 
 interface NowPlayingBarProps {
   entry: HistoryTrack | null
@@ -41,10 +42,29 @@ export function NowPlaying({ entry }: NowPlayingBarProps) {
         <TrackImage track={track} />
 
         <div className="flex-1">
-          <p className="text-lg font-semibold">{track.display?.title}</p>
-          <p className="text-sm text-gray-400">
-            {track.artists?.map((artist) => artist.name).join(', ')}
-          </p>
+          <a
+            href={`https://business.soundtrackyourbrand.com/search/${track.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cursor-pointer text-lg font-semibold hover:underline"
+          >
+            {track.display?.title}
+          </a>
+          <div>
+            {track.artists?.map((artist, index, arr) => (
+              <Fragment key={artist.name}>
+                <a
+                  href={`https://business.soundtrackyourbrand.com/search/${artist.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cursor-pointer text-sm text-gray-400 hover:underline"
+                >
+                  {artist.name}
+                </a>
+                {index < arr.length - 1 && ', '}
+              </Fragment>
+            ))}
+          </div>
         </div>
 
         <div>

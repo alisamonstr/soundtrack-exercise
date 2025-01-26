@@ -1,3 +1,5 @@
+import { Fragment } from 'react'
+
 import { FragmentOf, graphql } from '../../graphql.ts'
 import { TrackImage } from './TrackImage.tsx'
 import useRelativeTime from '../hooks/useRelativeTime.ts'
@@ -14,8 +16,31 @@ export function TrackRow(props: { entry: HistoryTrack }): React.ReactNode {
       <td>
         <TrackImage track={track} />
       </td>
-      <td>{track.display?.title}</td>
-      <td>{track.artists?.map((artist) => artist.name).join(', ')}</td>
+      <td>
+        <a
+          href={`https://business.soundtrackyourbrand.com/search/${track.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cursor-pointer hover:underline"
+        >
+          {track.display?.title}
+        </a>
+      </td>
+      <td>
+        {track.artists?.map((artist, index, arr) => (
+          <Fragment key={artist.name}>
+            <a
+              href={`https://business.soundtrackyourbrand.com/search/${artist.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cursor-pointer hover:underline"
+            >
+              {artist.name}
+            </a>
+            {index < arr.length - 1 && ', '}
+          </Fragment>
+        ))}
+      </td>
       <td>{entry.finishedAt ? relativeTime : 'Now Playing'}</td>
     </tr>
   )
