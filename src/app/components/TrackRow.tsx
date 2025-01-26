@@ -1,10 +1,10 @@
-import { Fragment } from 'react'
+import { Fragment, ReactNode } from 'react'
 
 import { FragmentOf, graphql } from '../../graphql.ts'
-import { TrackImage } from './TrackImage.tsx'
 import useRelativeTime from '../hooks/useRelativeTime.ts'
+import { TrackImage } from './TrackImage.tsx'
 
-export function TrackRow(props: { entry: HistoryTrack }): React.ReactNode {
+export function TrackRow(props: { entry: HistoryTrack }): ReactNode {
   const { entry } = props
   const { track } = entry
   if (!entry || !track) return null
@@ -13,7 +13,7 @@ export function TrackRow(props: { entry: HistoryTrack }): React.ReactNode {
 
   return (
     <tr>
-      <td>
+      <td className="px-2">
         <TrackImage track={track} />
       </td>
       <td>

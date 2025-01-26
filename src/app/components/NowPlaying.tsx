@@ -1,14 +1,18 @@
-import { HistoryTrack } from './TrackRow'
-import { TrackImage } from './TrackImage.tsx'
-import useProgress from '../hooks/useProgress.ts'
-import { Link, useLocation, useSearchParams } from 'react-router'
 import { Fragment } from 'react'
+import { Link, useLocation, useSearchParams } from 'react-router'
 
-interface NowPlayingBarProps {
+import useProgress from '../hooks/useProgress.ts'
+import { Skeleton } from './Skeleton.tsx'
+import { TrackImage } from './TrackImage.tsx'
+import { HistoryTrack } from './TrackRow'
+
+export function NowPlaying({
+  entry,
+  isLoading,
+}: {
   entry: HistoryTrack | null
-}
-
-export function NowPlaying({ entry }: NowPlayingBarProps) {
+  isLoading: boolean
+}) {
   const [searchParams] = useSearchParams()
   const location = useLocation()
   const isKioskMode = searchParams.get('kioskMode') === 'true'
@@ -23,6 +27,10 @@ export function NowPlaying({ entry }: NowPlayingBarProps) {
   const newParams = new URLSearchParams(searchParams.toString())
   newParams.delete('kioskMode')
   const newSearch = newParams.toString()
+
+  if (isLoading) {
+    return <TrackLoader isKioskMode={isKioskMode} />
+  }
 
   if (!entry || !track) {
     return (
@@ -95,6 +103,31 @@ export function NowPlaying({ entry }: NowPlayingBarProps) {
           X
         </Link>
       )}
+    </div>
+  )
+}
+
+function TrackLoader({ isKioskMode }: { isKioskMode: boolean }) {
+  return (
+    <div
+      className={`relative h-full bg-gray-800 p-4 text-white transition-all duration-500 ${isKioskMode ? 'col-span-2 h-screen' : ''}`}
+    >
+      <div className="flex items-center gap-4">
+        <Skeleton className="size-16" />
+
+        <div className="flex flex-1 flex-col gap-4">
+          <Skeleton className="h-2 w-30" />
+
+          <div>
+            <Skeleton className="h-2 w-20" />
+          </div>
+        </div>
+      </div>
+
+      <div className="relative mt-4">
+        <Skeleton className="h-1 w-full" />
+      </div>
+      {isKioskMode && <Skeleton className="absolute top-2 right-4 h-6 w-8" />}
     </div>
   )
 }

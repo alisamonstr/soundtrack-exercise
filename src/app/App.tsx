@@ -1,14 +1,13 @@
-import * as React from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router'
+
 import { client, graphql } from '../graphql'
-import './App.css'
-import {
-  TrackFragment,
-  TrackRow,
-  type HistoryTrack,
-} from './components/TrackRow.tsx'
 import { Header } from './components/Header.tsx'
 import { NowPlaying } from './components/NowPlaying.tsx'
-import { useSearchParams } from 'react-router'
+import { type HistoryTrack, TrackFragment } from './components/TrackRow.tsx'
+import { TracksHistory } from './components/TracksHistory.tsx'
+
+import './App.css'
 
 /**
  * A selection of various sound zones in the Soundtrack Stockholm office.
@@ -22,8 +21,9 @@ export const SOUNDTRACK_ZONES = {
   'Glass Room': 'SNLETO',
 } as const
 
-export default function App(): React.ReactNode {
+export default function App(): ReactNode {
   const [searchParams] = useSearchParams()
+  const [isLoading, setIsLoading] = useState(true)
 
   const currentZone = searchParams.get('zone')
   const shortID =
@@ -31,8 +31,8 @@ export default function App(): React.ReactNode {
     SOUNDTRACK_ZONES.Lounge
   const isKioskMode = searchParams.get('kioskMode') === 'true'
 
-  const [entries, setEntries] = React.useState<HistoryTrack[]>([])
-  const appendEntry = React.useCallback(
+  const [entries, setEntries] = useState<HistoryTrack[]>([])
+  const appendEntry = useCallback(
     (entry: OptionalKeys<HistoryTrack, 'id' | 'startedAt' | 'finishedAt'>) => {
       if (!entry?.track) {
         console.error('appendEntry: Incomplete entry', entry)
@@ -52,7 +52,8 @@ export default function App(): React.ReactNode {
     [],
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
+    setIsLoading(true)
     let isActive = true
     const subscriptions: Array<() => void> = []
     setEntries((entries) => (entries.length ? [] : entries))
@@ -69,6 +70,10 @@ export default function App(): React.ReactNode {
           })
         subscriptions.push(subscription.unsubscribe)
       })
+      .finally(() => {
+        setIsLoading(false)
+      })
+
     return () => {
       isActive = false
       subscriptions.forEach((unsubscribe) => unsubscribe())
@@ -80,31 +85,10 @@ export default function App(): React.ReactNode {
       {!isKioskMode && <Header onAddTrack={appendEntry} />}
       <main className="container mx-auto">
         <div className="grid md:grid-cols-2">
-          <NowPlaying entry={entries[0]} />
+          <NowPlaying entry={entries[0]} isLoading={isLoading} />
 
           {!isKioskMode && (
-            <div className="p-4">
-              <table className="history">
-                <thead>
-                  <tr>
-                    <th className="cover"></th>
-                    <th>Title</th>
-                    <th>Artists</th>
-                    <th>Played</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {entries.map((historyTrack) => {
-                    return (
-                      <TrackRow
-                        key={historyTrack.startedAt}
-                        entry={historyTrack}
-                      />
-                    )
-                  })}
-                </tbody>
-              </table>
-            </div>
+            <TracksHistory entries={entries} isLoading={isLoading} />
           )}
         </div>
       </main>

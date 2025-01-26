@@ -42,7 +42,7 @@ We also provide a list of [recommended VS Code extensions](.vscode/extensions.js
 
 - [ ] Add some style, preferably without integrating an entire CSS framework
 - [x] Make the page and list responsive
-- [ ] Add animations (loading spinner, fade/slide in entries, etc.)
+- [x] Add animations (loading spinner, fade/slide in entries, etc.)
 - [x] Fade in album art when loaded, while displaying a placeholder until the image has finished loading (`track.display.colors.*` can be used here)
 - [x] Allow user to change which zone to display (see `SOUNDTRACK_ZONES` for a selection of zone ids)
 - [x] Display the currently playing track with cover art in one column, and a track history list in another
