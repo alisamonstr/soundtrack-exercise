@@ -8,6 +8,7 @@ import {
 } from './components/TrackRow.tsx'
 import { Header } from './components/Header.tsx'
 import { NowPlaying } from './components/NowPlaying.tsx'
+import { useSearchParams } from 'react-router'
 
 /**
  * A selection of various sound zones in the Soundtrack Stockholm office.
@@ -22,7 +23,8 @@ export const SOUNDTRACK_ZONES = {
 } as const
 
 export default function App(): React.ReactNode {
-  const searchParams = new URLSearchParams(location.search)
+  const [searchParams] = useSearchParams()
+
   const currentZone = searchParams.get('zone')
   const shortID =
     SOUNDTRACK_ZONES[currentZone as keyof typeof SOUNDTRACK_ZONES] ||

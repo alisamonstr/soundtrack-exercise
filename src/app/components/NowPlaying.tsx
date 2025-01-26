@@ -1,13 +1,15 @@
 import { HistoryTrack } from './TrackRow'
 import { TrackImage } from './TrackImage.tsx'
 import useProgress from '../hooks/useProgress.ts'
+import { Link, useLocation, useSearchParams } from 'react-router'
 
 interface NowPlayingBarProps {
   entry: HistoryTrack | null
 }
 
 export function NowPlaying({ entry }: NowPlayingBarProps) {
-  const searchParams = new URLSearchParams(location.search)
+  const [searchParams] = useSearchParams()
+  const location = useLocation()
   const isKioskMode = searchParams.get('kioskMode') === 'true'
 
   const { track, startedAt } = entry || {}
@@ -17,12 +19,9 @@ export function NowPlaying({ entry }: NowPlayingBarProps) {
     startTime,
     track?.durationMs || 0,
   )
-
-  const switchOffKioskMode = () => {
-    const currentUrl = new URL(location.href)
-    currentUrl.searchParams.delete('kioskMode')
-    location.href = currentUrl.toString()
-  }
+  const newParams = new URLSearchParams(searchParams.toString())
+  newParams.delete('kioskMode')
+  const newSearch = newParams.toString()
 
   if (!entry || !track) {
     return (
@@ -36,7 +35,7 @@ export function NowPlaying({ entry }: NowPlayingBarProps) {
 
   return (
     <div
-      className={`relative bg-gray-800 p-4 text-white ${isKioskMode ? 'col-span-2 h-screen' : ''}`}
+      className={`relative h-full bg-gray-800 p-4 text-white transition-all duration-500 ${isKioskMode ? 'col-span-2 h-screen' : ''}`}
     >
       <div className="flex items-center gap-4">
         <TrackImage track={track} />
@@ -64,14 +63,17 @@ export function NowPlaying({ entry }: NowPlayingBarProps) {
       </div>
 
       {isKioskMode && (
-        <button
+        <Link
           type="button"
           aria-label="Exit kiosk mode"
           className="absolute top-2 right-4 rounded-lg bg-gray-700 px-4 text-white shadow-sm hover:bg-gray-500 active:bg-gray-700 active:outline-none"
-          onClick={switchOffKioskMode}
+          to={{
+            pathname: location.pathname,
+            search: newSearch,
+          }}
         >
           X
-        </button>
+        </Link>
       )}
     </div>
   )

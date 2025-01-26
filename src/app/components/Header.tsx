@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { SOUNDTRACK_ZONES } from '../App.tsx'
 import { DebugToolbar } from './DebugToolbar.tsx'
 import type { Track } from './TrackRow.tsx'
+import { Link, useSearchParams } from 'react-router'
 
 export function Header(props: {
   onAddTrack: (entry: { track: Track }) => void
@@ -23,18 +24,11 @@ export function Header(props: {
 
 function LoungeSelect() {
   const zones = Object.entries(SOUNDTRACK_ZONES)
-  const searchParams = new URLSearchParams(location.search)
+  const [searchParams] = useSearchParams()
   const currentZone = searchParams.get('zone')
 
   const [isOpen, setIsOpen] = useState(false)
   const toggleDropdown = () => setIsOpen((prev) => !prev)
-
-  const handleOptionClick = (option: (typeof zones)[0]) => {
-    const currentUrl = new URL(location.href)
-    currentUrl.searchParams.set('zone', option[0])
-    setIsOpen(false)
-    location.href = currentUrl.toString()
-  }
 
   return (
     <div className="relative w-40 md:w-64">
@@ -43,7 +37,7 @@ function LoungeSelect() {
         className="flex h-full w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm focus:ring-2 focus:ring-gray-500"
         onClick={toggleDropdown}
       >
-        {/*>TODO:fix default value*/}
+        {/*>zones[0][0] is Lounge, that is used as a default value*/}
         <span>{currentZone ? currentZone : zones[0][0]}</span>
         <div
           className={`h-4 w-4 transition-transform ${isOpen ? '-translate-x-1 rotate-270' : 'translate-x-1 rotate-90'}`}
@@ -53,14 +47,15 @@ function LoungeSelect() {
       </button>
       {isOpen && (
         <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-gray-300 bg-white shadow-lg">
-          {zones.map((option) => (
-            <li
-              key={option[1]}
-              className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${currentZone === option[0] ? 'bg-blue-100' : null}`}
-              onClick={() => handleOptionClick(option)}
-            >
-              {option[0]}
-            </li>
+          {zones.map(([key, value]) => (
+            <Link to={`/?zone=${key}`} key={value}>
+              <li
+                className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${currentZone === key ? 'bg-blue-100' : null}`}
+                onClick={() => setIsOpen(false)}
+              >
+                {key}
+              </li>
+            </Link>
           ))}
         </ul>
       )}
@@ -69,19 +64,13 @@ function LoungeSelect() {
 }
 
 function KioskModeButton() {
-  const switchOnKioskMode = () => {
-    const currentUrl = new URL(location.href)
-    currentUrl.searchParams.set('kioskMode', 'true')
-    location.href = currentUrl.toString()
-  }
-
   return (
-    <button
+    <Link
+      to="/?kioskMode=true"
       type="button"
       className="flex items-center rounded-lg bg-gray-700 px-4 text-base text-white shadow-sm hover:bg-gray-500 active:bg-gray-700 active:outline-none"
-      onClick={switchOnKioskMode}
     >
       Kiosk Mode
-    </button>
+    </Link>
   )
 }
