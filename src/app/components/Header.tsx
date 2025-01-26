@@ -1,12 +1,23 @@
 import { useState } from 'react'
 import { SOUNDTRACK_ZONES } from '../App.tsx'
+import { DebugToolbar } from './DebugToolbar.tsx'
+import type { Track } from './TrackRow.tsx'
 
-export function Header() {
+export function Header(props: {
+  onAddTrack: (entry: { track: Track }) => void
+}): React.ReactNode {
+  const hash = location.hash
+
   return (
-    <div className="flex h-16 w-full flex-row justify-between bg-red-50 p-4 md:h-20">
-      <LoungeSelect />
-      <KioskModeButton />
-    </div>
+    <header className="h-16 bg-red-50 p-4 md:h-20">
+      <div className="container mx-auto flex w-full flex-row justify-between">
+        <LoungeSelect />
+        {hash.includes('debug') && (
+          <DebugToolbar onAddTrack={props.onAddTrack} />
+        )}
+        <KioskModeButton />
+      </div>
+    </header>
   )
 }
 
@@ -24,6 +35,7 @@ function LoungeSelect() {
     setIsOpen(false)
     location.href = currentUrl.toString()
   }
+
   return (
     <div className="relative w-40 md:w-64">
       <button

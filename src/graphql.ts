@@ -9,6 +9,7 @@ export const graphql = initGraphQLTada<{
   scalars: {
     Url: string
     Date: string
+    HexColor: string
   }
 }>()
 

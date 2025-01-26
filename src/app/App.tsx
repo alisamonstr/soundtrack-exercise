@@ -6,8 +6,8 @@ import {
   TrackRow,
   type HistoryTrack,
 } from './components/TrackRow.tsx'
-import { DebugToolbar } from './components/DebugToolbar.tsx'
 import { Header } from './components/Header.tsx'
+import { NowPlaying } from './components/NowPlaying.tsx'
 
 /**
  * A selection of various sound zones in the Soundtrack Stockholm office.
@@ -27,10 +27,11 @@ export default function App(): React.ReactNode {
   const shortID =
     SOUNDTRACK_ZONES[currentZone as keyof typeof SOUNDTRACK_ZONES] ||
     SOUNDTRACK_ZONES.Lounge
+  const isKioskMode = searchParams.get('kioskMode') === 'true'
 
   const [entries, setEntries] = React.useState<HistoryTrack[]>([])
   const appendEntry = React.useCallback(
-    (entry: OptionalKeys<HistoryTrack, 'id' | 'startedAt'>) => {
+    (entry: OptionalKeys<HistoryTrack, 'id' | 'startedAt' | 'finishedAt'>) => {
       if (!entry?.track) {
         console.error('appendEntry: Incomplete entry', entry)
         return
@@ -38,7 +39,13 @@ export default function App(): React.ReactNode {
       const startedAt = new Date().toString()
       entry.startedAt ||= startedAt
       entry.id ||= startedAt
-      setEntries((prevTracks) => [entry as HistoryTrack, ...prevTracks])
+      setEntries((prevTracks) => {
+        const lastTrack = prevTracks[0]
+        if (lastTrack) {
+          lastTrack.finishedAt = startedAt
+        }
+        return [entry as HistoryTrack, ...prevTracks]
+      })
     },
     [],
   )
@@ -67,27 +74,39 @@ export default function App(): React.ReactNode {
   }, [shortID])
 
   return (
-    <main>
-      <Header />
-      <DebugToolbar onAddTrack={appendEntry} />
-      <table className="history">
-        <thead>
-          <tr>
-            <th className="cover"></th>
-            <th>Title</th>
-            <th>Artists</th>
-            <th>Played</th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map((historyTrack) => {
-            return (
-              <TrackRow key={historyTrack.startedAt} entry={historyTrack} />
-            )
-          })}
-        </tbody>
-      </table>
-    </main>
+    <>
+      {!isKioskMode && <Header onAddTrack={appendEntry} />}
+      <main className="container mx-auto">
+        <div className="grid md:grid-cols-2">
+          <NowPlaying entry={entries[0]} />
+
+          {!isKioskMode && (
+            <div className="p-4">
+              <table className="history">
+                <thead>
+                  <tr>
+                    <th className="cover"></th>
+                    <th>Title</th>
+                    <th>Artists</th>
+                    <th>Played</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {entries.map((historyTrack) => {
+                    return (
+                      <TrackRow
+                        key={historyTrack.startedAt}
+                        entry={historyTrack}
+                      />
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </main>
+    </>
   )
 }
 

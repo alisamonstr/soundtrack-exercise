@@ -41,14 +41,14 @@ We also provide a list of [recommended VS Code extensions](.vscode/extensions.js
 ## Possible things to implement
 
 - [ ] Add some style, preferably without integrating an entire CSS framework
-- [ ] Make the page and list responsive
+- [x] Make the page and list responsive
 - [ ] Add animations (loading spinner, fade/slide in entries, etc.)
-- [ ] Fade in album art when loaded, while displaying a placeholder until the image has finished loading (`track.display.colors.*` can be used here)
-- [ ] Allow user to change which zone to display (see `SOUNDTRACK_ZONES` for a selection of zone ids)
-- [ ] Display the currently playing track with cover art in one column, and a track history list in another
-- [ ] Only display the currently playing track in a kiosk-like mode
+- [x] Fade in album art when loaded, while displaying a placeholder until the image has finished loading (`track.display.colors.*` can be used here)
+- [x] Allow user to change which zone to display (see `SOUNDTRACK_ZONES` for a selection of zone ids)
+- [x] Display the currently playing track with cover art in one column, and a track history list in another
+- [x] Only display the currently playing track in a kiosk-like mode
 - [ ] Link tracks/artists to `https://business.soundtrackyourbrand.com/search/{id}`
-- [ ] Display entry timestamp in a relative format (X seconds/minutes/hours ago) + extra credits if it stays updated
+- [x] Display entry timestamp in a relative format (X seconds/minutes/hours ago) + extra credits if it stays updated
 - [ ] Utilize any other data available in each entry
 
 But don't let these suggestions limit you! Feel free to get creative with the data available via the GraphQL API and make something cool.

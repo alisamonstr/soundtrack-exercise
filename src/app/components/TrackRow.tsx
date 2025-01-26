@@ -1,68 +1,70 @@
 import { FragmentOf, graphql } from '../../graphql.ts'
+import { TrackImage } from './TrackImage.tsx'
+import useRelativeTime from '../hooks/useRelativeTime.ts'
 
 export function TrackRow(props: { entry: HistoryTrack }): React.ReactNode {
   const { entry } = props
   const { track } = entry
   if (!entry || !track) return null
 
+  const relativeTime = useRelativeTime(new Date(entry.finishedAt).getTime())
+
   return (
     <tr>
       <td>
-        {track.display?.image?.placeholder ? (
-          <img
-            src={displayImageUrl(track.display, 300)}
-            alt={`Album cover for ${track.display.title} by ${track.artists?.map((artist) => artist.name).join(', ')}`}
-            className="cover"
-          />
-        ) : (
-          <div className="cover" />
-        )}
+        <TrackImage track={track} />
       </td>
       <td>{track.display?.title}</td>
       <td>{track.artists?.map((artist) => artist.name).join(', ')}</td>
-      <td>{new Date(entry.startedAt).toLocaleTimeString()}</td>
+      <td>{entry.finishedAt ? relativeTime : 'Now Playing'}</td>
     </tr>
   )
 }
 
-/** Generates a valid URL for a displayable image utilizing the `placeholder` field. */
-export function displayImageUrl(
-  display:
-    | { image?: { placeholder?: string | null } | null }
-    | null
-    | undefined,
-  width: number,
-  height = width,
-) {
-  return display?.image?.placeholder
-    ?.replace('%w', width.toString())
-    .replace('%h', height.toString())
-}
-
-/**
- * Fields used to display a given entity.
- * Most of the types available in the Soundtrack API implements this interface.
- */
-export const DisplayableFragment = graphql(/* GraphQL */ `
-  fragment DisplayableFragment on Displayable {
-    display {
-      title
-      image {
-        placeholder
+export const ColorsFragment = graphql(/* GraphQL */ `
+  fragment ColorsFragment on Display {
+    colors {
+      primary {
+        hex
+      }
+      secondary {
+        hex
       }
     }
   }
 `)
 
+/**
+ * Fields used to display a given entity.
+ * Most of the types available in the Soundtrack API implements this interface.
+ */
+export const DisplayableFragment = graphql(
+  /* GraphQL */ `
+    fragment DisplayableFragment on Displayable {
+      display {
+        title
+        image {
+          placeholder
+        }
+        ...ColorsFragment
+      }
+    }
+  `,
+  [ColorsFragment],
+)
+
+export type Displayable = FragmentOf<typeof DisplayableFragment>
+
 export const TrackFragment = graphql(
   /* GraphQL */ `
     fragment TrackFragment on Track {
       id
-      ...DisplayableFragment
+      durationMs
       artists {
         id
         name
       }
+      ...DisplayableFragment
     }
   `,
   [DisplayableFragment],
@@ -75,6 +77,7 @@ export const HistoryTrackFragment = graphql(
     fragment HistoryTrackFragment on HistoryTrack {
       id
       startedAt
+      finishedAt
       track {
         ...TrackFragment
       }
