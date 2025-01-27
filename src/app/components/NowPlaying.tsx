@@ -4,7 +4,7 @@ import { Link, useLocation, useSearchParams } from 'react-router'
 import useProgress from '../hooks/useProgress.ts'
 import { Skeleton } from './Skeleton.tsx'
 import { TrackImage } from './TrackImage.tsx'
-import { HistoryTrack } from './TrackRow'
+import { HistoryTrack } from '../graphql/fragments.ts'
 
 export function NowPlaying({
   entry,

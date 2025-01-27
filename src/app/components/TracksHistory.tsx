@@ -1,5 +1,6 @@
 import { Skeleton } from './Skeleton.tsx'
-import { HistoryTrack, TrackRow } from './TrackRow.tsx'
+import { HistoryTrack } from '../graphql/fragments.ts'
+import { TrackRow } from './TrackRow.tsx'
 
 export function TracksHistory({
   entries,

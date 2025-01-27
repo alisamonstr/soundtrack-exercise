@@ -4,10 +4,10 @@ import { useSearchParams } from 'react-router'
 import { client } from '../graphql'
 import { Header } from './components/Header.tsx'
 import { NowPlaying } from './components/NowPlaying.tsx'
-import { type HistoryTrack } from './components/TrackRow.tsx'
 import { TracksHistory } from './components/TracksHistory.tsx'
 import { ZoneNowPlayingQuery } from './graphql/queries.ts'
 import { ZoneSubscription } from './graphql/subscriptions.ts'
+import { HistoryTrack } from './graphql/fragments.ts'
 
 /**
  * A selection of various sound zones in the Soundtrack Stockholm office.

@@ -49,7 +49,7 @@ We also provide a list of [recommended VS Code extensions](.vscode/extensions.js
 - [x] Only display the currently playing track in a kiosk-like mode
 - [x] Link tracks/artists to `https://business.soundtrackyourbrand.com/search/{id}`
 - [x] Display entry timestamp in a relative format (X seconds/minutes/hours ago) + extra credits if it stays updated
-- [ ] Utilize any other data available in each entry
+- [x] Utilize any other data available in each entry
 
 But don't let these suggestions limit you! Feel free to get creative with the data available via the GraphQL API and make something cool.
 

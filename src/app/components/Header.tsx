@@ -3,7 +3,7 @@ import { Link, useLocation, useSearchParams } from 'react-router'
 
 import { SOUNDTRACK_ZONES } from '../App.tsx'
 import { DebugToolbar } from './DebugToolbar.tsx'
-import type { Track } from './TrackRow.tsx'
+import { Track } from '../graphql/fragments.ts'
 
 export function Header(props: {
   onAddTrack: (entry: { track: Track }) => void

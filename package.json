@@ -11,7 +11,8 @@
     "zip": "zip soundtrack-exercise.zip -r README.md index.html package.json package-lock.json public/ src/ .vscode/ .editorconfig .gitignore .prettierrc tsconfig.* vite.config.ts",
     "update-schema": "gql.tada generate schema 'https://api.soundtrackyourbrand.com/v2' --output './schema.graphqls'",
     "postinstall": "npm run update-schema",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "gql.tada": "^1.8.7",
