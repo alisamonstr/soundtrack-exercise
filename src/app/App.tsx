@@ -1,11 +1,13 @@
 import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
 
-import { client, graphql } from '../graphql'
+import { client } from '../graphql'
 import { Header } from './components/Header.tsx'
 import { NowPlaying } from './components/NowPlaying.tsx'
-import { type HistoryTrack, TrackFragment } from './components/TrackRow.tsx'
+import { type HistoryTrack } from './components/TrackRow.tsx'
 import { TracksHistory } from './components/TracksHistory.tsx'
+import { ZoneNowPlayingQuery } from './graphql/queries.ts'
+import { ZoneSubscription } from './graphql/subscriptions.ts'
 
 /**
  * A selection of various sound zones in the Soundtrack Stockholm office.
@@ -98,37 +100,6 @@ export default function App(): ReactNode {
     </main>
   )
 }
-
-const ZoneNowPlayingQuery = graphql(
-  /* GraphQL */ `
-    query ZoneNowPlayingQuery($shortID: ID!) {
-      nowPlaying(soundZone: $shortID) {
-        soundZone
-        startedAt
-        track {
-          ...TrackFragment
-        }
-      }
-    }
-  `,
-  [TrackFragment],
-)
-
-const ZoneSubscription = graphql(
-  /* GraphQL */ `
-    subscription ZoneSubscription($shortID: ID!) {
-      nowPlayingUpdate(input: { soundZone: $shortID }) {
-        nowPlaying {
-          startedAt
-          track {
-            ...TrackFragment
-          }
-        }
-      }
-    }
-  `,
-  [TrackFragment],
-)
 
 /** Marks specific keys of an object as optional/nullable. */
 type OptionalKeys<T, K extends PropertyKey = PropertyKey> = Omit<T, K> & {

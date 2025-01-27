@@ -1,7 +1,8 @@
 import * as React from 'react'
 
-import { client, graphql } from '../../graphql.ts'
-import { type Track, TrackFragment } from './TrackRow.tsx'
+import { client } from '../../graphql.ts'
+import { TrackSearchQuery } from '../graphql/queries.ts'
+import { Track } from '../graphql/fragments.ts'
 
 /**
  * A debug toolbar used to artificially add tracks to the history.
@@ -55,19 +56,3 @@ export function DebugToolbar(props: {
     </form>
   )
 }
-
-const TrackSearchQuery = graphql(
-  /* GraphQL */ `
-    query TrackSearchQuery($query: String!) {
-      search(query: $query, type: track, market: SE, first: 1) {
-        edges {
-          node {
-            __typename
-            ...TrackFragment
-          }
-        }
-      }
-    }
-  `,
-  [TrackFragment],
-)
