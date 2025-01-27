@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import { client } from '../../graphql.ts'
-import { TrackSearchQuery } from '../graphql/queries.ts'
-import { Track } from '../graphql/fragments.ts'
+import { client } from '../../../graphql.ts'
+import { Track } from '../../graphql/fragments.ts'
+import { TrackSearchQuery } from '../../graphql/queries.ts'
 
 /**
  * A debug toolbar used to artificially add tracks to the history.
@@ -42,10 +42,10 @@ export function DebugToolbar(props: {
       <input
         name="query"
         type="text"
-        size={30}
+        size={26}
         placeholder="Search for track via name/artist"
         onFocus={(e) => e.currentTarget.select()}
-        className="rounded-lg border border-gray-100 bg-white p-2 shadow-sm outline-gray-500"
+        className="rounded-lg border border-gray-300 bg-white p-2 shadow-sm outline-gray-500"
       />
       <button
         type="submit"

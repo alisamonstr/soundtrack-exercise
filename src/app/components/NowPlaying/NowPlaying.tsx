@@ -1,10 +1,11 @@
 import { Fragment } from 'react'
-import { Link, useLocation, useSearchParams } from 'react-router'
+import { useSearchParams } from 'react-router'
 
-import useProgress from '../hooks/useProgress.ts'
-import { Skeleton } from './Skeleton.tsx'
-import { TrackImage } from './TrackImage.tsx'
-import { HistoryTrack } from '../graphql/fragments.ts'
+import type { HistoryTrack } from '../../graphql/fragments.ts'
+import useProgress from '../../hooks/useProgress.ts'
+import { TrackImage } from '../TrackImage.tsx'
+import { CloseKiosModeButton } from './CloseKioskModeButton.tsx'
+import { NowPlayingLoader } from './NowPlayingLoader.tsx'
 
 export function NowPlaying({
   entry,
@@ -25,7 +26,7 @@ export function NowPlaying({
   )
 
   if (isLoading) {
-    return <TrackLoader isKioskMode={isKioskMode} />
+    return <NowPlayingLoader isKioskMode={isKioskMode} />
   }
 
   if (!entry || !track) {
@@ -85,60 +86,5 @@ export function NowPlaying({
       </div>
       {isKioskMode && <CloseKiosModeButton />}
     </>
-  )
-}
-
-function TrackLoader({ isKioskMode }: { isKioskMode: boolean }) {
-  return (
-    <>
-      <div className="relative w-full flex-1">
-        <div className="[container-type:size] absolute flex h-full w-full items-center justify-center">
-          <Skeleton
-            className={`h-[min(100cqw,100cqh)] w-[min(100cqw,100cqh)] rounded-none`}
-          />
-        </div>
-      </div>
-
-      <div className="w-full">
-        <div className="flex w-full items-center gap-4">
-          <div className="mt-1 flex flex-1 flex-col gap-4">
-            <Skeleton className="h-4 w-30" />
-            <Skeleton className="h-4 w-20" />
-          </div>
-          <div>
-            <Skeleton className="h-2 w-10" />
-          </div>
-        </div>
-
-        <div className="relative mt-4 w-full">
-          <Skeleton className="h-1 w-full" />
-        </div>
-      </div>
-
-      {isKioskMode && <Skeleton className="absolute top-2 right-4 h-6 w-10" />}
-    </>
-  )
-}
-
-function CloseKiosModeButton() {
-  const location = useLocation()
-  const [searchParams] = useSearchParams()
-
-  const newParams = new URLSearchParams(searchParams.toString())
-  newParams.delete('kioskMode')
-  const newSearch = newParams.toString()
-
-  return (
-    <Link
-      type="button"
-      aria-label="Exit kiosk mode"
-      className="absolute top-2 right-4 rounded-lg bg-gray-700 px-4 text-white shadow-sm hover:bg-gray-500 active:bg-gray-700 active:outline-none"
-      to={{
-        pathname: location.pathname,
-        search: newSearch,
-      }}
-    >
-      X
-    </Link>
   )
 }

@@ -2,24 +2,13 @@ import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
 
 import { client } from '../graphql'
-import { Header } from './components/Header.tsx'
-import { NowPlaying } from './components/NowPlaying.tsx'
-import { TracksHistory } from './components/TracksHistory.tsx'
+import { Header } from './components/Header/Header.tsx'
+import { NowPlaying } from './components/NowPlaying/NowPlaying.tsx'
+import { TracksHistory } from './components/TrackHistory/TracksHistory.tsx'
+import { SOUNDTRACK_ZONES } from './constants.ts'
+import type { HistoryTrack } from './graphql/fragments.ts'
 import { ZoneNowPlayingQuery } from './graphql/queries.ts'
 import { ZoneSubscription } from './graphql/subscriptions.ts'
-import { HistoryTrack } from './graphql/fragments.ts'
-
-/**
- * A selection of various sound zones in the Soundtrack Stockholm office.
- * At least one of these zones should be playing music at any given time.
- * The value represents the "short ID" of the zone, which can be used to get
- * playback history without being authenticated.
- */
-export const SOUNDTRACK_ZONES = {
-  Lounge: 'BRGJFA',
-  Listen: 'ODJECD',
-  'Glass Room': 'SNLETO',
-} as const
 
 export default function App(): ReactNode {
   const [searchParams] = useSearchParams()

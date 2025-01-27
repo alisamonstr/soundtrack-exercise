@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Displayable, Track } from '../graphql/fragments.ts'
+
+import type { Displayable, Track } from '../graphql/fragments.ts'
 
 /** Generates a valid URL for a displayable image utilizing the `placeholder` field. */
 export function displayImageUrl(

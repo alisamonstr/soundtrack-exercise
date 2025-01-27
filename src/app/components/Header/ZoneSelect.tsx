@@ -1,31 +1,9 @@
 import { useState } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router'
 
-import { SOUNDTRACK_ZONES } from '../App.tsx'
-import { DebugToolbar } from './DebugToolbar.tsx'
-import { Track } from '../graphql/fragments.ts'
+import { SOUNDTRACK_ZONES } from '../../constants.ts'
 
-export function Header(props: {
-  onAddTrack: (entry: { track: Track }) => void
-}): React.ReactNode {
-  const [searchParams] = useSearchParams()
-
-  return (
-    <header className="min-h-16 flex-none bg-red-50 p-4 md:h-20">
-      <div className="container mx-auto flex w-full flex-row flex-wrap justify-between gap-4">
-        <LoungeSelect />
-        <div className="order-4 md:order-1">
-          {searchParams.get('debug') === 'true' && (
-            <DebugToolbar onAddTrack={props.onAddTrack} />
-          )}
-        </div>
-        <KioskModeButton />
-      </div>
-    </header>
-  )
-}
-
-function LoungeSelect() {
+export function ZoneSelect() {
   const zones = Object.entries(SOUNDTRACK_ZONES)
   const [searchParams] = useSearchParams()
   const location = useLocation()
@@ -77,26 +55,5 @@ function LoungeSelect() {
         ))}
       </ul>
     </div>
-  )
-}
-
-function KioskModeButton() {
-  const [searchParams] = useSearchParams()
-  const location = useLocation()
-
-  const newParams = new URLSearchParams(searchParams.toString())
-  newParams.set('kioskMode', 'true')
-  const newSearch = newParams.toString()
-  return (
-    <Link
-      to={{
-        pathname: location.pathname,
-        search: newSearch,
-      }}
-      type="button"
-      className="order-3 flex items-center rounded-lg bg-gray-700 px-4 text-base text-white shadow-sm hover:bg-gray-500 active:bg-gray-700 active:outline-none"
-    >
-      Kiosk Mode
-    </Link>
   )
 }

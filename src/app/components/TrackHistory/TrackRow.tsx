@@ -1,9 +1,9 @@
 import { Fragment, ReactNode } from 'react'
 
-import { formatDuration } from '../hooks/useProgress.ts'
-import useRelativeTime from '../hooks/useRelativeTime.ts'
-import { TrackImage } from './TrackImage.tsx'
-import { HistoryTrack } from '../graphql/fragments.ts'
+import type { HistoryTrack } from '../../graphql/fragments.ts'
+import { formatDuration } from '../../hooks/useProgress.ts'
+import useRelativeTime from '../../hooks/useRelativeTime.ts'
+import { TrackImage } from '../TrackImage.tsx'
 
 export function TrackRow(props: { entry: HistoryTrack }): ReactNode {
   const { entry } = props
