@@ -40,7 +40,7 @@ We also provide a list of [recommended VS Code extensions](.vscode/extensions.js
 
 ## Possible things to implement
 
-- [ ] Add some style, preferably without integrating an entire CSS framework
+- [x] Add some style, preferably without integrating an entire CSS framework
 - [x] Make the page and list responsive
 - [x] Add animations (loading spinner, fade/slide in entries, etc.)
 - [x] Fade in album art when loaded, while displaying a placeholder until the image has finished loading (`track.display.colors.*` can be used here)

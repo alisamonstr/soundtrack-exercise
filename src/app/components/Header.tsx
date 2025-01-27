@@ -28,7 +28,15 @@ export function Header(props: {
 function LoungeSelect() {
   const zones = Object.entries(SOUNDTRACK_ZONES)
   const [searchParams] = useSearchParams()
+  const location = useLocation()
+
   const currentZone = searchParams.get('zone')
+
+  const getNewParams = (value: string) => {
+    const newParams = new URLSearchParams(searchParams.toString())
+    newParams.set('zone', value)
+    return newParams.toString()
+  }
 
   const [isOpen, setIsOpen] = useState(false)
   const toggleDropdown = () => setIsOpen((prev) => !prev)
@@ -52,7 +60,13 @@ function LoungeSelect() {
         className={`absolute z-10 mt-1 transition-all duration-300 ease-in ${isOpen ? 'max-h-64 shadow-lg' : ''} max-h-0 w-full overflow-y-auto rounded-lg bg-white`}
       >
         {zones.map(([key, value]) => (
-          <Link to={`/?zone=${key}`} key={value}>
+          <Link
+            to={{
+              pathname: location.pathname,
+              search: getNewParams(key),
+            }}
+            key={value}
+          >
             <li
               className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${currentZone === key ? 'bg-blue-100' : null}`}
               onClick={() => setIsOpen(false)}
