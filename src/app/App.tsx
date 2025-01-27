@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router'
 import { client } from '../graphql'
 import { Header } from './components/Header/Header.tsx'
 import { NowPlaying } from './components/NowPlaying/NowPlaying.tsx'
+import { Recommendations } from './components/Recommendations.tsx'
 import { TracksHistory } from './components/TrackHistory/TracksHistory.tsx'
 import { SOUNDTRACK_ZONES } from './constants.ts'
 import type { HistoryTrack } from './graphql/fragments.ts'
@@ -70,23 +71,30 @@ export default function App(): ReactNode {
   }, [shortID])
 
   return (
-    <main className="flex h-dvh min-h-[570px] flex-col">
-      {!isKioskMode && <Header onAddTrack={appendEntry} />}
-      <div className="flex-1 md:overflow-hidden">
-        <div className="container mx-auto h-full">
-          <div className="block h-full md:grid md:grid-cols-2">
-            <div
-              className={`relative flex h-[370px] flex-col items-center justify-around gap-4 bg-gray-800 p-4 text-white md:h-full md:p-8 ${isKioskMode ? '!fixed inset-0 z-10 h-screen w-screen' : ''}`}
-            >
-              <NowPlaying entry={entries[0]} isLoading={isLoading} />
+    <>
+      <main className="flex h-auto min-h-dvh flex-col md:h-dvh">
+        {!isKioskMode && <Header onAddTrack={appendEntry} />}
+        <div className="flex-1 md:overflow-hidden">
+          <div className="container mx-auto h-full">
+            <div className="block h-full md:grid md:grid-cols-2">
+              <div
+                className={`relative flex h-[370px] flex-col items-center justify-around gap-4 bg-gray-800 p-4 text-white md:h-full md:p-8 ${isKioskMode ? '!fixed inset-0 z-10 h-screen w-screen' : ''}`}
+              >
+                <NowPlaying entry={entries[0]} isLoading={isLoading} />
+              </div>
+              {!isKioskMode && (
+                <TracksHistory entries={entries} isLoading={isLoading} />
+              )}
             </div>
-            {!isKioskMode && (
-              <TracksHistory entries={entries} isLoading={isLoading} />
-            )}
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+      {!isKioskMode && (
+        <div className="container mx-auto py-4">
+          <Recommendations entry={entries[0]} />
+        </div>
+      )}
+    </>
   )
 }
 

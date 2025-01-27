@@ -18,7 +18,7 @@ export function TracksHistory({
         <div>Title</div>
         <div>Last played</div>
         <div className="hidden md:block">Time</div>
-        <div className="col-span-3 border border-gray-400" />
+        <div className="col-span-2 border border-gray-400 md:col-span-3" />
 
         {isLoading ? (
           <TrackRowLoader />

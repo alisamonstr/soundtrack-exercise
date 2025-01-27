@@ -31,3 +31,19 @@ export const TrackSearchQuery = graphql(
   `,
   [TrackFragment],
 )
+
+export const TrackRecommendationsQuery = graphql(
+  /* GraphQL */ `
+    query TrackRecommendationsQuery($tracks: [ID!]!, $first: Int) {
+      playlistEditorTrackSuggestions(tracks: $tracks, first: $first) {
+        edges {
+          node {
+            __typename
+            ...TrackFragment
+          }
+        }
+      }
+    }
+  `,
+  [TrackFragment],
+)
