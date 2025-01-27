@@ -1,6 +1,7 @@
 import * as React from 'react'
+
 import { client, graphql } from '../../graphql.ts'
-import { TrackFragment, type Track } from './TrackRow.tsx'
+import { type Track, TrackFragment } from './TrackRow.tsx'
 
 /**
  * A debug toolbar used to artificially add tracks to the history.
@@ -11,7 +12,7 @@ export function DebugToolbar(props: {
   const [state, setState] = React.useState<'idle' | 'loading' | 'error'>('idle')
   return (
     <form
-      className="DebugToolbar"
+      className="flex gap-4"
       onSubmit={(event) => {
         event.preventDefault()
         if (state === 'loading') return
@@ -43,8 +44,14 @@ export function DebugToolbar(props: {
         size={30}
         placeholder="Search for track via name/artist"
         onFocus={(e) => e.currentTarget.select()}
+        className="rounded-lg border border-gray-100 bg-white p-2 shadow-sm outline-gray-500"
       />
-      <button type="submit" disabled={state === 'loading'} children="Add" />
+      <button
+        type="submit"
+        disabled={state === 'loading'}
+        children="Add"
+        className="flex items-center rounded-lg bg-gray-700 px-4 text-base text-white shadow-sm hover:bg-gray-500 active:bg-gray-700 active:outline-none"
+      />
     </form>
   )
 }

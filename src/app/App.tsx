@@ -7,8 +7,6 @@ import { NowPlaying } from './components/NowPlaying.tsx'
 import { type HistoryTrack, TrackFragment } from './components/TrackRow.tsx'
 import { TracksHistory } from './components/TracksHistory.tsx'
 
-import './App.css'
-
 /**
  * A selection of various sound zones in the Soundtrack Stockholm office.
  * At least one of these zones should be playing music at any given time.
@@ -81,18 +79,23 @@ export default function App(): ReactNode {
   }, [shortID])
 
   return (
-    <>
+    <main className="flex h-dvh min-h-[570px] flex-col">
       {!isKioskMode && <Header onAddTrack={appendEntry} />}
-      <main className="container mx-auto">
-        <div className="grid md:grid-cols-2">
-          <NowPlaying entry={entries[0]} isLoading={isLoading} />
-
-          {!isKioskMode && (
-            <TracksHistory entries={entries} isLoading={isLoading} />
-          )}
+      <div className="flex-1 md:overflow-hidden">
+        <div className="container mx-auto h-full">
+          <div className="block h-full md:grid md:grid-cols-2">
+            <div
+              className={`relative flex h-[370px] flex-col items-center justify-around gap-4 bg-gray-800 p-4 text-white md:h-full md:p-8 ${isKioskMode ? '!fixed inset-0 z-10 h-screen w-screen' : ''}`}
+            >
+              <NowPlaying entry={entries[0]} isLoading={isLoading} />
+            </div>
+            {!isKioskMode && (
+              <TracksHistory entries={entries} isLoading={isLoading} />
+            )}
+          </div>
         </div>
-      </main>
-    </>
+      </div>
+    </main>
   )
 }
 

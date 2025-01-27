@@ -1,6 +1,7 @@
 import { initGraphQLTada } from 'gql.tada'
-import { Client, fetchExchange, subscriptionExchange } from 'urql'
 import { createClient as createWSClient } from 'graphql-ws'
+import { Client, fetchExchange, subscriptionExchange } from 'urql'
+
 import type { introspection } from './graphql.generated.d.ts'
 
 export const graphql = initGraphQLTada<{

@@ -4,14 +4,8 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "skipLibCheck": true,
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "types": [
-      "vite/client"
-    ],
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -35,7 +29,5 @@
       }
     ]
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

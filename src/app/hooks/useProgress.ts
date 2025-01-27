@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const formatDuration = (ms: number): string => {
+export const formatDuration = (ms: number): string => {
   const totalSeconds = Math.floor(ms / 1000)
   const minutes = Math.floor(totalSeconds / 60)
   const seconds = totalSeconds % 60
